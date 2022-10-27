@@ -5,6 +5,7 @@
 ## Requirements
 
 - [Install Node.js](https://nodejs.org/en/download/)
+- [Install Docker](https://www.docker.com/products/docker-desktop/)
 ## Project setup
 
 ```sh
