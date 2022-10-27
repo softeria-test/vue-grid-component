@@ -32,7 +32,7 @@ yarn test:unit
 yarn test:e2e
 ```
 
-### Lints and fixes files
+### Lints files
 
 ```sh
 yarn lint
