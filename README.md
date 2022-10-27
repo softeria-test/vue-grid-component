@@ -6,6 +6,8 @@
 
 - [Install Node.js](https://nodejs.org/en/download/)
 - [Install Docker](https://www.docker.com/products/docker-desktop/)
+- Start SonarQube: `yarn start-sonarqube` (Then navigate to [http://localhost:9000/](http://localhost:9000/) to get the SonarQube dashboard)
+
 ## Project setup
 
 ```sh

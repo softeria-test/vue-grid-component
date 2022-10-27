@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint --no-fix"
+    "lint": "vue-cli-service lint --no-fix",
+    "start-sonarqube": "docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest"
   },
   "dependencies": {
     "core-js": "^3.8.3",
