@@ -1,5 +1,7 @@
 # vue-grid-component
 
+> A grid component, written with Vue.js 2.7, composition API, TypeScript, SonarQube and Jest
+
 ## Project setup
 
 ```sh
