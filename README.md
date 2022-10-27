@@ -6,7 +6,6 @@
 
 - [Install Node.js](https://nodejs.org/en/download/)
 - [Install Docker](https://www.docker.com/products/docker-desktop/)
-- Start SonarQube: `yarn start-sonarqube` (Then navigate to [http://localhost:9000/](http://localhost:9000/) to get the SonarQube dashboard)
 
 ## Project setup
 
@@ -43,6 +42,12 @@ yarn test:e2e
 ```sh
 yarn lint
 ```
+
+### Run SonarScanner
+
+- Start SonarQube: `yarn start-sonarqube`
+- docker run --rm -e SONAR_HOST_URL="${SONARQUBE_URL}" -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=${PROJECT_KEY}" -e SONAR_LOGIN="${AUTH_TOKEN}" -v "${PROJECT_PATH}:/usr/src" sonarsource/sonar-scanner-cli
+- Then navigate to `http://localhost:9000/dashboard?id=${PROJECT_KEY}` to get the dashboard for this project
 
 ### Customize configuration
 
