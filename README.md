@@ -2,6 +2,9 @@
 
 > A grid component, written with Vue.js 2.7, composition API, TypeScript, SonarQube and Jest
 
+## Requirements
+
+- [Install Node.js](https://nodejs.org/en/download/)
 ## Project setup
 
 ```sh
