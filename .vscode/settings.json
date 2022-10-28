@@ -1,5 +1,9 @@
 {
   "editor.rulers": [
     120
-  ]
+  ],
+  "sonarlint.connectedMode.project": {
+    "connectionId": "sonarqube-local",
+    "projectKey": "vue-grid-component-test"
+  }
 }
