@@ -46,7 +46,7 @@ yarn lint
 ### Run SonarScanner
 
 - Start SonarQube: `yarn start-sonarqube`
-- docker run --rm -e SONAR_HOST_URL="${SONARQUBE_URL}" -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=${PROJECT_KEY}" -e SONAR_LOGIN="${AUTH_TOKEN}" -v "${PROJECT_PATH}:/usr/src" sonarsource/sonar-scanner-cli
+- `docker run --rm -e SONAR_HOST_URL="${SONARQUBE_URL}" -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=${PROJECT_KEY}" -e SONAR_LOGIN="${AUTH_TOKEN}" -v "${PROJECT_PATH}:/usr/src" sonarsource/sonar-scanner-cli`
 - Then navigate to `http://localhost:9000/dashboard?id=${PROJECT_KEY}` to get the dashboard for this project
 
 ### Customize configuration
