@@ -1,0 +1,45 @@
+services:
+  node:
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - repo:/home/node/vue-grid-component
+    command: yarn serve
+  node-ssh:
+    build:
+      context: .
+      dockerfile: Dockerfile.ssh
+    ports:
+      - 8080:8080
+    volumes:
+      - repo:/home/node/vue-grid-component
+    command: yarn serve
+  cypress:
+    image: cypress/included:3.2.0
+    depends_on:
+      - node
+    environment:
+      - CYPRESS_baseUrl=http://node:8080
+    working_dir: /e2e
+    volumes:
+      - repo:/e2e
+  sonarqube:
+    image: sonarqube
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    ports:
+      - 9000:9000
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    depends_on:
+      - node
+      - sonarqube
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=override-this-value-in-docker-compose.override.yml
+      - SONAR_LOGIN=override-this-value-in-docker-compose.override.yml
+    volumes:
+      - repo:/usr/src
+volumes:
+  repo:
