@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as $protobuf from "protobufjs";
 export = stach;
 

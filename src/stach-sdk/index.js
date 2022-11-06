@@ -1,3 +1,4 @@
+/* eslint-disable */
 var lib = require('./stach');
 
 // The following overrides the toObject/fromObject for Google well
