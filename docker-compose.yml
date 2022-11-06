@@ -2,10 +2,10 @@ services:
   node:
     build: .
     ports:
-      - 8080:8080
+      - 8081:8081
     volumes:
       - repo:/home/node/vue-grid-component
-    command: yarn serve
+    command: yarn serve --port 8081
   node-ssh:
     build:
       context: .
@@ -20,7 +20,7 @@ services:
     depends_on:
       - node
     environment:
-      - CYPRESS_baseUrl=http://node:8080
+      - CYPRESS_baseUrl=http://node:8081
     working_dir: /e2e
     volumes:
       - repo:/e2e
