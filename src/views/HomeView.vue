@@ -5,5 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import GridComp from '@/components/GridComp.vue' // @ is an alias to /src
+// @ is an alias to /src
+import GridComp from '@/components/GridComp.vue' // NOSONAR
 </script>
