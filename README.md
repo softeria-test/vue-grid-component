@@ -4,33 +4,35 @@
 
 ## Requirements
 
-1. Fetch this repository into your local (You can clone with Git or copy only `Dockerfile`, `Dockerfile.ssh` and `docker-compose.yml` files)
+1. Fetch this repository into your local (You can clone with Git or copy only `Dockerfile`, `Dockerfile.wo-ssh` and `docker-compose.yml` files)
 1. [Install Docker](https://www.docker.com/products/docker-desktop/)
 1. [Install VS Code](https://code.visualstudio.com/download)
 1. [Install "Dev Containers" VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 1. Open a terminal in the project path
 
-## Run development server (for maintainers)
-
-At first, you should [generate an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent), [add it to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) and copy the private key into the project key.
-
-```sh
-docker compose up node-ssh
-```
-
-Then navigate to [http://localhost:8080](http://localhost:8080) to view the project.
-
-You can use [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code extension to open a VS Code instance in this container.
-
 ## Run development server (for non-maintainers)
 
 ```sh
-docker compose up node
+docker compose up app_wo_ssh
 ```
 
+You can use [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code extension to open a VS Code instance in this container.
+
+Inside container install dependencies (`yarn install`) and start development server (`yarn serve`).
 Then navigate to [http://localhost:8080](http://localhost:8080) to view the project.
 
+## Run development server (for maintainers)
+
+At first, you should [generate an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent), [add it to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) and copy the private key into the project.
+
+```sh
+docker compose up app
+```
+
 You can use [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VS Code extension to open a VS Code instance in this container.
+
+Inside container install dependencies (`yarn install`) and start development server (`yarn serve`).
+Then navigate to [http://localhost:8080](http://localhost:8080) to view the project.
 
 ## Available scripts to run in dev container
 
@@ -66,10 +68,10 @@ yarn lint
 
 ## Run your end-to-end tests
 
-At first, you should run the `node` container:
+At first, you should run the `app` (or `app_wo_ssh`) container:
 
 ```sh
-docker compose up node
+docker compose up app
 ```
 
 Then, in a different terminal session, you can run the related container to run your end-to-end tests with Cypress:
@@ -80,10 +82,10 @@ docker compose up cypress
 
 ## Run SonarScanner
 
-At first, you should run the `node` container:
+At first, you should run the `app` (or `app_wo_ssh`) container:
 
 ```sh
-docker compose up node
+docker compose up app
 ```
 
 Then, in a different terminal session, you should start the `sonarqube`:
@@ -96,16 +98,16 @@ After then, you should navigate to [http://localhost:9000](http://localhost:9000
 
 ```yml
 services:
-  sonar-scanner:
+  sonar_scanner:
     environment:
       - SONAR_SCANNER_OPTS=-Dsonar.projectKey=your-project-key
       - SONAR_LOGIN=your-project-token
 ```
 
-Then, again in a different terminal session, you can run the related container to run `sonar-scanner`:
+Then, again in a different terminal session, you can run the related container to run `sonar_scanner`:
 
 ```sh
-docker compose up sonar-scanner
+docker compose up sonar_scanner
 ```
 
 Then navigate to `http://localhost:9000/dashboard?id=${your-project-key}` to get the dashboard for this project.

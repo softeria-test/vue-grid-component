@@ -1,0 +1,6 @@
+FROM node
+
+USER node
+
+# Clone the repo
+RUN git clone https://github.com/softeria-test/vue-grid-component.git ~/vue-grid-component
