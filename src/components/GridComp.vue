@@ -96,7 +96,7 @@ export default class GridComp extends Vue {
   }
 
   groupLevel (row: IRow, colIndex: number) {
-    return 0
+    return row.cellDetails?.[colIndex]?.groupLevel
   }
 
   unhiddenCells (row: IRow, cells: unknown[]) {
