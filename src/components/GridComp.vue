@@ -6,7 +6,8 @@
         :key="rowIndex"
       >
         <template v-if="isHeader(row)">
-          <th v-for="(cellValue, colIndex) in unhiddenCells(row, row.cells)"
+          <template v-for="(cellValue, colIndex) in row.cells">
+            <th v-if="!isHidden(row, colIndex)"
             :key="colIndex"
             :rowspan="rowspan(row, colIndex)"
             :colspan="colspan(row, colIndex)"
@@ -20,8 +21,10 @@
             </div>
           </th>
         </template>
+        </template>
         <template v-else>
-          <td v-for="(cellValue, colIndex) in unhiddenCells(row, row.cells)"
+          <template v-for="(cellValue, colIndex) in row.cells">
+            <td v-if="!isHidden(row, colIndex)"
             :key="colIndex"
             :rowspan="rowspan(row, colIndex)"
             :colspan="colspan(row, colIndex)"
@@ -34,6 +37,7 @@
               {{ cellValue }}
             </div>
           </td>
+        </template>
         </template>
       </tr>
     </table>
