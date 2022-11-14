@@ -41,14 +41,17 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import stachRowOrganizedPackage from '@/data/stach-row-organized-package.json'
+import { defineProps } from 'vue'
 import { factset as stach } from '@/stach-sdk'
 
 type ITable = stach.protobuf.stach.v2.RowOrganizedPackage.ITable
 type IRow = stach.protobuf.stach.v2.RowOrganizedPackage.IRow
 
-const table: ITable = reactive(stachRowOrganizedPackage.tables.main as unknown as ITable)
+interface Props {
+  table: ITable
+}
+
+const props = defineProps<Props>()
 
 const isHeader = (row: IRow) => (row.rowType as unknown as string) === 'Header'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
