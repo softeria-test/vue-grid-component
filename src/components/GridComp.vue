@@ -63,7 +63,7 @@ export default class GridComp extends Vue {
     const columns = this.columns()
 
     if ((row.rowType as unknown as string) === 'Header') {
-      const headerCellColumnIndex = row.headerCellDetails?.[colIndex].columnIndex
+      const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
       if (headerCellColumnIndex != null) {
         return columns?.[headerCellColumnIndex].isHidden
       }
