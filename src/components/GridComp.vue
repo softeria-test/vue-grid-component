@@ -87,12 +87,10 @@ export default class GridComp extends Vue {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   rowspan (row: IRow, colIndex: number) {
-    return 1
+    return row.headerCellDetails?.[colIndex]?.rowspan
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   colspan (row: IRow, colIndex: number) {
     return 1
   }
