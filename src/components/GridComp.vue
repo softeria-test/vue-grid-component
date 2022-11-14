@@ -40,40 +40,60 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { defineProps } from 'vue'
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import { factset as stach } from '@/stach-sdk'
 
 type ITable = stach.protobuf.stach.v2.RowOrganizedPackage.ITable
 type IRow = stach.protobuf.stach.v2.RowOrganizedPackage.IRow
 
-interface Props {
-  table: ITable
-}
+@Component
+export default class GridComp extends Vue {
+  @Prop() private table!: ITable;
 
-const props = defineProps<Props>()
-
-const isHeader = (row: IRow) => (row.rowType as unknown as string) === 'Header'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const isHidden = (row: IRow, colIndex: number) => false
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const alignment = (row: IRow, colIndex: number, direction: string) => {
-  if (direction === 'horizontal') {
-    return 'center'
-  } else {
-    // direction === 'vertical'
-    return 'middle'
+  isHeader (row: IRow) {
+    return (row.rowType as unknown as string) === 'Header'
   }
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const rowspan = (row: IRow, colIndex: number) => 1
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const colspan = (row: IRow, colIndex: number) => 1
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const groupLevel = (row: IRow, colIndex: number) => 0
 
-const unhiddenCells = (row: IRow, cells: unknown[]) => {
-  return cells.filter((cell, index) => !isHidden(row, index))
+  isHidden (row: IRow, colIndex: number) {
+    const columns = this.table.definition?.columns
+
+    if ((row.rowType as unknown as string) === 'Header') {
+      const headerCellColumnIndex = row.headerCellDetails?.[colIndex].columnIndex
+      if (headerCellColumnIndex != null) {
+        return columns?.[headerCellColumnIndex].isHidden
+      }
+    } else {
+      return columns?.[colIndex].isHidden
+    }
+  }
+
+  alignment (row: IRow, colIndex: number, direction: string) {
+    if (direction === 'horizontal') {
+      return 'center'
+    } else {
+      // direction === 'vertical'
+      return 'middle'
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  rowspan (row: IRow, colIndex: number) {
+    return 1
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  colspan (row: IRow, colIndex: number) {
+    return 1
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  groupLevel (row: IRow, colIndex: number) {
+    return 0
+  }
+
+  unhiddenCells (row: IRow, cells: unknown[]) {
+    return cells.filter((cell, index) => !this.isHidden(row, index))
+  }
 }
 </script>
