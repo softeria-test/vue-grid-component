@@ -8,36 +8,36 @@
         <template v-if="isHeader(row)">
           <template v-for="(cellValue, colIndex) in row.cells">
             <th v-if="!isHidden(row, colIndex)"
-            :key="colIndex"
-            :rowspan="rowspan(row, colIndex)"
-            :colspan="colspan(row, colIndex)"
-            :style="{
-                textAlign: alignment(row, colIndex, 'horizontal'),
-                verticalAlign: alignment(row, colIndex, 'vertical')
-            }"
-          >
-            <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
-              {{ cellValue }}
-            </div>
-          </th>
-        </template>
+              :key="colIndex"
+              :rowspan="rowspan(row, colIndex)"
+              :colspan="colspan(row, colIndex)"
+              :style="{
+                  textAlign: alignment(row, colIndex, 'horizontal'),
+                  verticalAlign: alignment(row, colIndex, 'vertical')
+              }"
+            >
+              <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
+                {{ cellValue }}
+              </div>
+            </th>
+          </template>
         </template>
         <template v-else>
           <template v-for="(cellValue, colIndex) in row.cells">
             <td v-if="!isHidden(row, colIndex)"
-            :key="colIndex"
-            :rowspan="rowspan(row, colIndex)"
-            :colspan="colspan(row, colIndex)"
-            :style="{
-              textAlign: alignment(row, colIndex, 'horizontal'),
-              verticalAlign: alignment(row, colIndex, 'vertical')
-            }"
-          >
-            <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
-              {{ cellValue }}
-            </div>
-          </td>
-        </template>
+              :key="colIndex"
+              :rowspan="rowspan(row, colIndex)"
+              :colspan="colspan(row, colIndex)"
+              :style="{
+                textAlign: alignment(row, colIndex, 'horizontal'),
+                verticalAlign: alignment(row, colIndex, 'vertical')
+              }"
+            >
+              <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
+                {{ cellValue }}
+              </div>
+            </td>
+          </template>
         </template>
       </tr>
     </table>
