@@ -60,7 +60,7 @@ export default class GridComp extends Vue {
   }
 
   isHidden (row: IRow, colIndex: number) {
-    const columns = this.table.definition?.columns
+    const columns = this.columns()
 
     if ((row.rowType as unknown as string) === 'Header') {
       const headerCellColumnIndex = row.headerCellDetails?.[colIndex].columnIndex
@@ -98,6 +98,10 @@ export default class GridComp extends Vue {
 
   unhiddenCells (row: IRow, cells: unknown[]) {
     return cells.filter((cell, index) => !this.isHidden(row, index))
+  }
+
+  columns () {
+    return this.table.definition?.columns
   }
 }
 </script>
