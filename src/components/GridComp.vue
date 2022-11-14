@@ -73,11 +73,17 @@ export default class GridComp extends Vue {
   }
 
   alignment (row: IRow, colIndex: number, direction: string) {
-    if (direction === 'horizontal') {
-      return 'center'
+    const alignmentType = direction === 'horizontal' ? 'halign' : 'valign'
+
+    const columns = this.columns()
+
+    if ((row.rowType as unknown as string) === 'Header') {
+      const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
+      if (headerCellColumnIndex != null) {
+        return columns?.[headerCellColumnIndex]?.format?.[alignmentType]
+      }
     } else {
-      // direction === 'vertical'
-      return 'middle'
+      return columns?.[colIndex]?.format?.[alignmentType]
     }
   }
 
