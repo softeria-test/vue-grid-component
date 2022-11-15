@@ -6,71 +6,105 @@
         :key="rowIndex"
       >
         <template v-if="isHeader(row)">
-          <th v-for="(cellValue, colIndex) in unhiddenCells(row, row.cells)"
-            :key="colIndex"
-            :rowspan="rowspan(row, colIndex)"
-            :colspan="colspan(row, colIndex)"
-            :style="{
-                textAlign: alignment(row, colIndex, 'horizontal'),
-                verticalAlign: alignment(row, colIndex, 'vertical')
-            }"
-          >
-            <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
-              {{ cellValue }}
-            </div>
-          </th>
+          <template v-for="(cellValue, colIndex) in row.cells">
+            <th v-if="!isHidden(row, colIndex)"
+              :key="colIndex"
+              :rowspan="rowspan(row, colIndex)"
+              :colspan="colspan(row, colIndex)"
+              :style="{
+                  textAlign: alignment(row, colIndex, 'horizontal'),
+                  verticalAlign: alignment(row, colIndex, 'vertical')
+              }"
+            >
+              <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
+                {{ cellValue }}
+              </div>
+            </th>
+          </template>
         </template>
         <template v-else>
-          <td v-for="(cellValue, colIndex) in unhiddenCells(row, row.cells)"
-            :key="colIndex"
-            :rowspan="rowspan(row, colIndex)"
-            :colspan="colspan(row, colIndex)"
-            :style="{
-              textAlign: alignment(row, colIndex, 'horizontal'),
-              verticalAlign: alignment(row, colIndex, 'vertical')
-            }"
-          >
-            <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
-              {{ cellValue }}
-            </div>
-          </td>
+          <template v-for="(cellValue, colIndex) in row.cells">
+            <td v-if="!isHidden(row, colIndex)"
+              :key="colIndex"
+              :rowspan="rowspan(row, colIndex)"
+              :colspan="colspan(row, colIndex)"
+              :style="{
+                textAlign: alignment(row, colIndex, 'horizontal'),
+                verticalAlign: alignment(row, colIndex, 'vertical')
+              }"
+            >
+              <div :style="{ 'padding-left': groupLevel(row, colIndex) + 'em' }">
+                {{ cellValue }}
+              </div>
+            </td>
+          </template>
         </template>
       </tr>
     </table>
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive } from 'vue'
-import stachRowOrganizedPackage from '@/data/stach-row-organized-package.json'
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import { factset as stach } from '@/stach-sdk'
 
 type ITable = stach.protobuf.stach.v2.RowOrganizedPackage.ITable
 type IRow = stach.protobuf.stach.v2.RowOrganizedPackage.IRow
 
-const table: ITable = reactive(stachRowOrganizedPackage.tables.main as unknown as ITable)
+@Component
+export default class GridComp extends Vue {
+  @Prop() private table!: ITable;
 
-const isHeader = (row: IRow) => (row.rowType as unknown as string) === 'Header'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const isHidden = (row: IRow, colIndex: number) => false
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const alignment = (row: IRow, colIndex: number, direction: string) => {
-  if (direction === 'horizontal') {
-    return 'center'
-  } else {
-    // direction === 'vertical'
-    return 'middle'
+  isHeader (row: IRow) {
+    return (row.rowType as unknown as string) === 'Header'
   }
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const rowspan = (row: IRow, colIndex: number) => 1
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const colspan = (row: IRow, colIndex: number) => 1
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const groupLevel = (row: IRow, colIndex: number) => 0
 
-const unhiddenCells = (row: IRow, cells: unknown[]) => {
-  return cells.filter((cell, index) => !isHidden(row, index))
+  isHidden (row: IRow, colIndex: number) {
+    const columns = this.columns()
+
+    if ((row.rowType as unknown as string) === 'Header') {
+      const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
+      if (headerCellColumnIndex != null) {
+        return columns?.[headerCellColumnIndex].isHidden
+      }
+    } else {
+      return columns?.[colIndex].isHidden
+    }
+  }
+
+  alignment (row: IRow, colIndex: number, direction: string) {
+    const alignmentType = direction === 'horizontal' ? 'halign' : 'valign'
+
+    const columns = this.columns()
+
+    if ((row.rowType as unknown as string) === 'Header') {
+      const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
+      if (headerCellColumnIndex != null) {
+        return columns?.[headerCellColumnIndex]?.format?.[alignmentType]
+      }
+    } else {
+      return columns?.[colIndex]?.format?.[alignmentType]
+    }
+  }
+
+  rowspan (row: IRow, colIndex: number) {
+    return row.headerCellDetails?.[colIndex]?.rowspan
+  }
+
+  colspan (row: IRow, colIndex: number) {
+    return row.headerCellDetails?.[colIndex]?.colspan
+  }
+
+  groupLevel (row: IRow, colIndex: number) {
+    return row.cellDetails?.[colIndex]?.groupLevel
+  }
+
+  unhiddenCells (row: IRow, cells: unknown[]) {
+    return cells.filter((cell, index) => !this.isHidden(row, index))
+  }
+
+  columns () {
+    return this.table.definition?.columns
+  }
 }
 </script>
