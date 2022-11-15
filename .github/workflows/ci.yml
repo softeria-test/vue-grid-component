@@ -2,7 +2,7 @@ name: CI
 run-name: Run linter and unit tests
 on: [ push ]
 jobs:
-  lint:
+  lint-and-unit-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -12,3 +12,4 @@ jobs:
         node-version: latest
     - run: yarn install
     - run: yarn lint
+    - run: yarn test:unit
