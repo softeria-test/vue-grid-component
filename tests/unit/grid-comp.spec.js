@@ -1,6 +1,6 @@
 import GridComp from '@/components/GridComp.vue'
 import { shallowMount } from '@vue/test-utils'
-import stachRowOrganizedPackage from '@/data/stach-row-organized-package.json'
+import stachRowOrganizedPackage from './fixtures/stach-row-organized-package.json'
 
 describe('GridComp.vue', () => {
   let table = null

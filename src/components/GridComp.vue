@@ -53,7 +53,7 @@ type IRow = stach.protobuf.stach.v2.RowOrganizedPackage.IRow
 
 @Component
 export default class GridComp extends Vue {
-  @Prop() private table!: ITable;
+  @Prop() private table!: ITable | null
 
   isHeader (row: IRow) {
     return (row.rowType as unknown as string) === 'Header'
@@ -104,7 +104,7 @@ export default class GridComp extends Vue {
   }
 
   columns () {
-    return this.table.definition?.columns
+    return this.table?.definition?.columns
   }
 }
 </script>
