@@ -36,3 +36,6 @@ id_ed25519
 
 # Docker Compose override file
 docker-compose.override.yml
+
+# Coverage directory used by tools like istanbul
+coverage
