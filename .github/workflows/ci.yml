@@ -1,15 +1,29 @@
-name: CI
-run-name: Run linter and unit tests
-on: [ push ]
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across the Node LTS version
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  lint-and-unit-test:
+  test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         node-version: latest
         cache: 'yarn'
-    - run: yarn install
-    - run: yarn test
+    - name: Install dependencies
+      run: yarn install
+    - name: Test
+      run: yarn test
