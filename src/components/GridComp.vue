@@ -45,66 +45,80 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
 import { factset as stach } from '@/stach-sdk'
 
 type ITable = stach.protobuf.stach.v2.RowOrganizedPackage.ITable
 type IRow = stach.protobuf.stach.v2.RowOrganizedPackage.IRow
 
-@Component
-export default class GridComp extends Vue {
-  @Prop() private table!: ITable | null
+export default defineComponent({
+  props: {
+    table: Object as PropType<ITable>
+  },
+  setup (props) {
+    const columns = () => {
+      return props.table?.definition?.columns
+    }
 
-  isHeader (row: IRow) {
-    return (row.rowType as unknown as string) === 'Header'
-  }
+    const isHeader = (row: IRow) => {
+      return (row.rowType as unknown as string) === 'Header'
+    }
 
-  isHidden (row: IRow, colIndex: number) {
-    const columns = this.columns()
+    const isHidden = (row: IRow, colIndex: number) => {
+      const myColumns = columns()
 
-    if ((row.rowType as unknown as string) === 'Header') {
-      const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
-      if (headerCellColumnIndex != null) {
-        return columns?.[headerCellColumnIndex].isHidden
+      if ((row.rowType as unknown as string) === 'Header') {
+        const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
+        if (headerCellColumnIndex != null) {
+          return myColumns?.[headerCellColumnIndex].isHidden
+        }
+      } else {
+        return myColumns?.[colIndex].isHidden
       }
-    } else {
-      return columns?.[colIndex].isHidden
+    }
+
+    const alignment = (row: IRow, colIndex: number, direction: string) => {
+      const alignmentType = direction === 'horizontal' ? 'halign' : 'valign'
+
+      const myColumns = columns()
+
+      if ((row.rowType as unknown as string) === 'Header') {
+        const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
+        if (headerCellColumnIndex != null) {
+          return myColumns?.[headerCellColumnIndex]?.format?.[alignmentType]
+        }
+      } else {
+        return myColumns?.[colIndex]?.format?.[alignmentType]
+      }
+    }
+
+    const rowspan = (row: IRow, colIndex: number) => {
+      return row.headerCellDetails?.[colIndex]?.rowspan
+    }
+
+    const colspan = (row: IRow, colIndex: number) => {
+      return row.headerCellDetails?.[colIndex]?.colspan
+    }
+
+    const groupLevel = (row: IRow, colIndex: number) => {
+      return row.cellDetails?.[colIndex]?.groupLevel
+    }
+
+    const unhiddenCells = (row: IRow, cells: unknown[]) => {
+      return cells.filter((cell, index) => !isHidden(row, index))
+    }
+
+    return {
+      isHeader,
+      isHidden,
+      alignment,
+      rowspan,
+      colspan,
+      groupLevel,
+      unhiddenCells,
+      columns
     }
   }
-
-  alignment (row: IRow, colIndex: number, direction: string) {
-    const alignmentType = direction === 'horizontal' ? 'halign' : 'valign'
-
-    const columns = this.columns()
-
-    if ((row.rowType as unknown as string) === 'Header') {
-      const headerCellColumnIndex = row.headerCellDetails?.[colIndex]?.columnIndex
-      if (headerCellColumnIndex != null) {
-        return columns?.[headerCellColumnIndex]?.format?.[alignmentType]
-      }
-    } else {
-      return columns?.[colIndex]?.format?.[alignmentType]
-    }
-  }
-
-  rowspan (row: IRow, colIndex: number) {
-    return row.headerCellDetails?.[colIndex]?.rowspan
-  }
-
-  colspan (row: IRow, colIndex: number) {
-    return row.headerCellDetails?.[colIndex]?.colspan
-  }
-
-  groupLevel (row: IRow, colIndex: number) {
-    return row.cellDetails?.[colIndex]?.groupLevel
-  }
-
-  unhiddenCells (row: IRow, cells: unknown[]) {
-    return cells.filter((cell, index) => !this.isHidden(row, index))
-  }
-
-  columns () {
-    return this.table?.definition?.columns
-  }
-}
+})
 </script>
