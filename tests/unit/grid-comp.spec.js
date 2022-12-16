@@ -72,4 +72,58 @@ describe('GridComp.vue', () => {
 
     expect(wrapper.findAll('td').at(21).find('div').attributes('style')).toMatch(/padding-left:\s?1em/)
   })
+
+  describe('sorting feature', () => {
+    it('renders initial sort arrows as ascending order', async () => {
+      const wrapper = shallowMount(GridComp)
+
+      await wrapper.setProps({ table })
+
+      expect(
+        wrapper.findAll('span.arrow').wrappers.every(wrapper2 => wrapper2.classes('asc') && !wrapper2.classes('dsc'))
+      ).toBeTruthy()
+    })
+
+    it('renders a sort arrow as opposite after it is clicked', async () => {
+      const wrapper = shallowMount(GridComp)
+
+      await wrapper.setProps({ table })
+
+      // Get the first arrow
+      const firstArrowWrapper = wrapper.find('span.arrow')
+      // Click the arrow
+      await firstArrowWrapper.trigger('click')
+
+      expect(firstArrowWrapper.classes('dsc')).toBeTruthy()
+    })
+
+    it('sorts in descending order', async () => {
+      const wrapper = shallowMount(GridComp)
+
+      await wrapper.setProps({ table })
+
+      // Get the first arrow
+      const firstArrowWrapper = wrapper.find('span.arrow')
+      // Click the arrow
+      await firstArrowWrapper.trigger('click')
+
+      // The second td should be 100 now
+      expect(wrapper.findAll('td').at(1).text()).toEqual('100')
+    })
+
+    it('sorts in ascending order', async () => {
+      const wrapper = shallowMount(GridComp)
+
+      await wrapper.setProps({ table })
+
+      // Get the first arrow
+      const firstArrowWrapper = wrapper.find('span.arrow')
+      // Click the arrow twice to achieve ascending sorting
+      firstArrowWrapper.trigger('click')
+      await firstArrowWrapper.trigger('click')
+
+      // The second td should be 0.15 now
+      expect(wrapper.findAll('td').at(1).text()).toEqual('0.15')
+    })
+  })
 })
