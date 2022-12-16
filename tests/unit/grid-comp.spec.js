@@ -10,7 +10,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders component properly', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
@@ -18,7 +18,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders correct count of tr elements', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
@@ -26,7 +26,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders correct count of th elements (excluding hidden ones)', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
@@ -34,7 +34,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders correct count of td elements (excluding hidden ones)', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
@@ -42,7 +42,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders correct rowspan for the first th element', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
@@ -50,7 +50,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders correct colspan for the second th element', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
@@ -58,7 +58,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders correct text-align for the second td element', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
@@ -66,7 +66,7 @@ describe('GridComp.vue', () => {
   })
 
   it('renders correct padding-left for the div of 22nd td element', async () => {
-    const wrapper = await shallowMount(GridComp)
+    const wrapper = shallowMount(GridComp)
 
     await wrapper.setProps({ table })
 
