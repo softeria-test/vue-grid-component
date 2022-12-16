@@ -9,7 +9,7 @@ import { ref } from 'vue'
 
 // @ is an alias to /src
 import { factset as stach } from '@/stach-sdk'
-import GridComp from '@/components/GridComp.vue' // NOSONAR
+import GridComp from '@/components/GridComp/GridComp.vue' // NOSONAR
 
 type ITable = stach.protobuf.stach.v2.RowOrganizedPackage.ITable
 
