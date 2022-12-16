@@ -1,4 +1,4 @@
-import GridComp from '@/components/GridComp.vue'
+import GridComp from '@/components/GridComp/GridComp.vue'
 import { shallowMount } from '@vue/test-utils'
 import stachRowOrganizedPackage from './fixtures/stach-row-organized-package.json'
 
