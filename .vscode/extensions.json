@@ -3,6 +3,7 @@
     "DavidAnson.vscode-markdownlint",
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
+    "ms-vscode-remote.remote-containers",
     "octref.vetur",
     "SonarSource.sonarlint-vscode"
   ]
