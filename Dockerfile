@@ -11,5 +11,9 @@ RUN \
   eval "$(ssh-agent -s)" \
   ssh-add ~/.ssh/id_ed25519
 
+# Setup git
+RUN git config --global user.name "Ismail Arilik"
+RUN git config --global user.email "ismail.arilik@factset.com"
+RUN git config --global pull.rebase true
 # Clone the repo
 RUN git clone git@github.com:softeria-test/vue-grid-component.git /home/node/vue-grid-component
