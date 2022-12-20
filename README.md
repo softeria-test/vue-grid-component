@@ -66,6 +66,12 @@ yarn test:unit
 yarn lint
 ```
 
+### Lints files and run your unit tests
+
+```sh
+yarn test
+```
+
 ## Run your end-to-end tests
 
 At first, you should run the `app` (or `app_wo_ssh`) container:
